@@ -1,4 +1,4 @@
-export default function GoblinCredit() {
+export default function IconCredit() {
     return (
         <>
             <div className="icon-credit"><img src="./goblin64x64.png" height="16" width="16" /><a target="_blank"
