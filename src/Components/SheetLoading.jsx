@@ -3,30 +3,32 @@ import SheetManagerFactory from "../sheetManager";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default function SheetLoading({ state, setSheetManager }) {
-    const [loadState, setLoadState] = useState({ state: 'ready', sheetManager: undefined });
-
+export default function SheetLoading({ setSheetManager }) {
+    const [loadState, setLoadState] = useState({ state: 'ready', sheetManager: undefined, error: undefined });
     switch (loadState.state) {
         case 'ready':
             setLoadState({
                 sheetManager: SheetManagerFactory({
                     sheetID: import.meta.env.VITE_SHEET_ID,
                     apiKey: import.meta.env.VITE_API_KEY,
-                    onLoad: () => {
-                        setSheetManager(loadState.sheetManager);
-                    },
-                    onError: (errorMessage) => setLoadState(errorMessage),
+                    onError: (errorMessage) => setLoadState({ errorMessage, state: 'error' }),
                 }),
-                loadState: 'loading',
+                state: 'loading',
             });
+            break;
         case 'loading':
+            loadState.sheetManager.load(() => {
+                setSheetManager(loadState.sheetManager);
+            })
             return (<>Loading...</>);
             break;
         case 'finished':
-            return (<></>);
+            return (<>Done!</>);
             break;
         case 'error':
-            return (<>{state.sheetError}</>);
+            return (<>{loadState.errorMessage}</>);
             break;
+        default:
+            return( <>{loadState.state}</>)
     }
 }

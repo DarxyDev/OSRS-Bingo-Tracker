@@ -12,18 +12,19 @@ function App() {
     selectedTeam: false,
     teamSheet: undefined,
   });
+  //console.log(state.sheetManager)////////////////////
   const [loaded, setLoaded] = useState(false);
   let currentMenu = <>Error in switch case</>;
   switch (true) {
+    //load sheetManager
     case !loaded:
-      currentMenu = <SheetLoading
-        state
-        setSheetManager={(sheetManager) => { 
-          setState({ ...state, sheetManager}); 
-          setLoaded(true);
-        }}
+      currentMenu = <SheetLoading setSheetManager={(sheetManager) => {
+        setState({ ...state, sheetManager });
+        setLoaded(true);
+      }}
       />;
       break;
+    //select which team
     case !state.selectedTeam:
       currentMenu = <GoblinTeamMenu
         teams={state.teamNames}

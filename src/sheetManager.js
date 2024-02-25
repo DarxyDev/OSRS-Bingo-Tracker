@@ -5,11 +5,11 @@ const RANGE = 'Sheet1'
 export default function sheetManagerFactory({
     sheetID,
     apiKey,
-    onLoad = (value) => value,
     onError = (errorMessage) => console.log(errorMessage),
     range = RANGE,
 }) {
-    (function load() {
+    let sheet;
+    function load(onLoad = (value) => value) {
         function loadSheet() {
             // 2. Initialize the JavaScript client library.
             gapi.client.init({
@@ -21,6 +21,7 @@ export default function sheetManagerFactory({
                 })
             }).then(function (response) {
                 // 4.
+                sheet = response.result;
                 onLoad(response.result)
             }, function (reason) {
                 onError('Error: ' + reason.result.error.message);
@@ -28,7 +29,7 @@ export default function sheetManagerFactory({
         };
         // 1. Load the JavaScript client library.
         gapi.load('client', loadSheet);
-    })()
+    }
 
-    return {};
+    return {id:'heheee', sheet, load};
 }
