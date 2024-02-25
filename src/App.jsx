@@ -7,28 +7,36 @@ import GoblinTeamMenu from './Components/GoblinTeamMenu';
 function App() {
   const [state, setState] = useState({
     sheetLoaded: false,
-    sheetError: false,
-    sheet: undefined,
-    teamNames:['team1','teeeem2'],
+    sheetManager: undefined,
+    teamNames: ['team1', 'teeeem2'],
     selectedTeam: false,
-    teamSheet:undefined,
+    teamSheet: undefined,
   });
+  const [loaded, setLoaded] = useState(false);
   let currentMenu = <>Error in switch case</>;
   switch (true) {
-    case !state.sheetLoaded:
-    case state.sheetError !== false:
-      currentMenu = <SheetLoading {...{ state, setState }} />;
+    case !loaded:
+      currentMenu = <SheetLoading
+        state
+        setSheetManager={(sheetManager) => { 
+          setState({ ...state, sheetManager}); 
+          setLoaded(true);
+        }}
+      />;
       break;
-
     case !state.selectedTeam:
-      currentMenu = <GoblinTeamMenu teams={state.teamNames} setTeam={(selectedTeam)=>setState({...state,selectedTeam})}/>
-      break;
+      currentMenu = <GoblinTeamMenu
+        teams={state.teamNames}
+        setTeam={(selectedTeam) => setState({ ...state, selectedTeam })}
+        addTeam={(teamName) => { console.log('not implemented') }
 
+        } />
+      break;
     default:
       currentMenu = <>Under construction...</>;
   }
 
-  return(
+  return (
     <div>
       {currentMenu}
     </div>

@@ -9,7 +9,7 @@ export default function GoblinTeamMenu({ teams, setTeam, addTeam }) {
                 {teamName}
                 </button>
             ))}
-            <AddTeamSection addTeam/>
+            <AddTeamSection addTeam={addTeam}/>
         </div>
     )
 }
@@ -26,7 +26,10 @@ function AddTeamSection({addTeam}){
     return (
         <div>
             <input onChange={(e)=>{setTeamName(e.target.value)}}/>
-            <button onClick={()=>{addTeam(teamName)}}>submit</button>
+            <button onClick={()=>{
+                addTeam(teamName);
+                setActive(false);
+                }}>submit</button>
         </div>
     )
 }
